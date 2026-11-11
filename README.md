@@ -114,4 +114,4 @@ Both projects run automatically on every push through GitHub Actions: the Prolog
 
 **CSEN403 Concepts of Programming Languages**, German University in Cairo, Spring 2024 (Dr. Nourhan Ehab).
 
-**Team:** Daniel Ehab · George Amgad · Mina Hossam · Mark
+**Team:** Daniel Ehab · George Amgad · Mina Hossam · Mark Maged
