@@ -1,0 +1,34 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  prolog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SWI-Prolog
+        run: sudo apt-get update && sudo apt-get install -y swi-prolog-nox
+      - name: Solve the sample week
+        working-directory: prolog-quiz-proctoring
+        run: swipl -q -g run -t halt example.pl
+
+  haskell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: "9.6"
+      - name: Check the board functions
+        working-directory: haskell-peg-reversal
+        run: |
+          ghc -e 'length (createBoard (0,0)) == 33' \
+              -e 'isValidMove (M (0,1)) (createBoard (0,0))' \
+              -e 'not (isValidMove (M (3,1)) (createBoard (0,0)))' \
+              -e 'not (isGoal (createBoard (0,0)))' \
+              -e 'let play b = if isGoal b then 0 else (\(S _ b2) -> 1 + play b2) (head (showPossibleNextStates b)) in play (createBoard (0,0)) == (32 :: Int)' \
+              PegReversal.hs | tee results.txt
+          ! grep -q False results.txt
